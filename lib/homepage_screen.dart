@@ -1,6 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/book_detail_screen.dart';
+import 'package:library_app/json/book.dart';
+import 'package:library_app/json/user.dart';
 import 'package:library_app/super_base.dart';
+
+import 'json/category.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({Key? key}) : super(key: key);
@@ -10,23 +16,52 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends Superbase<HomepageScreen> {
+
+  List<Category> _list = [];
+  List<Book> _books = [];
+  List<Book> _popularBooks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+loadCategories();
+    });
+  }
+
+  void loadCategories(){
+    ajax(url: "MobileHomepage",method: "POST",data: FormData.fromMap({
+      "role":"Adults"
+    }),onValue: (s,v){
+      print(s);
+      setState(() {
+        _list = (s['HomeCategories'] as Iterable).map((e) => Category.fromJson(e)).toList();
+        _books = (s['RecentlyAddedBooks'] as Iterable).map((e) => Book.fromJson(e)).toList();
+        _popularBooks = (s['PopularBooks'] as Iterable).map((e) => Book.fromJson(e)).toList();
+      });
+    },error: (s,v){
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
+        titleSpacing: 10,
         title: Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 10),
+             Padding(
+              padding: const EdgeInsets.only(right: 10),
               child: CircleAvatar(
-                backgroundImage: AssetImage("assets/hubert.png"),
+                child: Text((User.user?.fName??"XA").toUpperCase().substring(0,1)),
                 radius: 14,
               ),
             ),
             Text(
-              "Hi, Hubert",
+              "Hi, ${User.user?.fName??""}",
               style: Theme.of(context).textTheme.headline6,
             ),
           ],
@@ -36,10 +71,11 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
         actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
       ),
       body: ListView.builder(
-        itemCount: 5000,
+        itemCount: _popularBooks.length+1,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         itemBuilder: (context, index) {
-          if (index == 0) {
+          index = index - 1;
+          if (index < 0) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -55,7 +91,7 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3),
-                  children: [1, 2, 3, 4, 5, 6]
+                  children: _list
                       .map((e) => Container(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     margin: const EdgeInsets.all(8),
@@ -78,8 +114,8 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
                               padding: const EdgeInsets.all(8),
                               child: Column(
                                 children: [
-                                  Expanded(child: Image.asset("assets/open_book.png")),
-                                  const Text("Category Name",textAlign: TextAlign.center,maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(
+                                  Expanded(child: Image(image: CachedNetworkImageProvider(e.image),frameBuilder: frameBuilder,)),
+                                  Text(e.name,textAlign: TextAlign.center,maxLines: 1,overflow: TextOverflow.ellipsis,style: const TextStyle(
                                     fontSize: 13
                                   ),)
                                 ],
@@ -93,7 +129,7 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Text(
-                    "Popular Books",
+                    "Recent Books",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
                   ),
                 ),
@@ -101,60 +137,79 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
                   height: 300,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 5000,
+                      itemCount: _books.length,
                       itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: (){
-                            push(const BookDetailScreen());
-                          },
+                        var book = _books[index];
+                        return SizedBox(
+                          width: 180,
                           child: Padding(
                             padding: const EdgeInsets.only(right: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset(
-                                          "assets/book_image.png",
-                                          fit: BoxFit.cover,
-                                        ))),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "Fashionopolis",
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                                Text(
-                                  "Patrick Mauriès",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2
-                                      ?.copyWith(
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .headline4
-                                              ?.color),
-                                )
-                              ],
+                            child: InkWell(
+                              onTap: (){
+                                push( BookDetailScreen(book: book,));
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                      child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Image(
+                                            image: CachedNetworkImageProvider(book.image),
+                                            fit: BoxFit.cover,
+                                          ))),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    book.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.headline6,
+                                  ),
+                                  Text(
+                                    book.category??"",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        ?.copyWith(
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .headline4
+                                                ?.color),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         );
                       }),
-                )
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Text(
+                    "Popular Books",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                  ),
+                ),
               ],
             );
           }
 
+
+          var item = _popularBooks[index];
+
           return Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(vertical: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(7),
-                  child: Image.asset(
-                    "assets/book_pink.png",
+                  child: Image(
+                    image: CachedNetworkImageProvider(item.image),
+                    frameBuilder: frameBuilder,
                     height: 83,
                     width: 70,
                     fit: BoxFit.cover,
@@ -168,29 +223,29 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Yves Saint Laurent",
+                        item.name,
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       Text(
-                        "Suzy Menkes",
+                        item.category??"",
                         style: Theme.of(context).textTheme.subtitle2?.copyWith(
                             color:
                                 Theme.of(context).textTheme.headline4?.color),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: Row(
-                          children: [1, 2, 3, 4, 5]
-                              .map((e) => Icon(
-                                    Icons.star,
-                                    size: 15,
-                                    color: e < 4
-                                        ? Colors.amber
-                                        : const Color(0xffEDEDEF),
-                                  ))
-                              .toList(),
-                        ),
-                      )
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 12),
+                      //   child: Row(
+                      //     children: [1, 2, 3, 4, 5]
+                      //         .map((e) => Icon(
+                      //               Icons.star,
+                      //               size: 15,
+                      //               color: e < 4
+                      //                   ? Colors.amber
+                      //                   : const Color(0xffEDEDEF),
+                      //             ))
+                      //         .toList(),
+                      //   ),
+                      // )
                     ],
                   ),
                 )),

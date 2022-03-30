@@ -1,13 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/json/book.dart';
+import 'package:library_app/super_base.dart';
 
 class BookDetailScreen extends StatefulWidget{
-  const BookDetailScreen({Key? key}) : super(key: key);
+  final Book book;
+  const BookDetailScreen({Key? key, required this.book}) : super(key: key);
 
   @override
   State<BookDetailScreen> createState() => _BookDetailScreenState();
 }
 
-class _BookDetailScreenState extends State<BookDetailScreen> {
+class _BookDetailScreenState extends Superbase<BookDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,38 +27,38 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
       ),
       body: ListView(
         children: [
-          Center(child: Image.asset("assets/book_pink.png",fit: BoxFit.cover,height: 300,)),
+          Center(child: Image(image: CachedNetworkImageProvider(widget.book.image),frameBuilder: frameBuilder,fit: BoxFit.cover,height: 300,)),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  const Text("Yves Saint Laurent",textAlign: TextAlign.center,style: TextStyle(
-                    fontSize: 26
+                  Text(widget.book.name,textAlign: TextAlign.center,style: const TextStyle(
+                    fontSize: 25
                   ),),
-                  Text("Suzy Menkes",textAlign: TextAlign.center,style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                  Text(widget.book.category??"",textAlign: TextAlign.center,style: Theme.of(context).textTheme.subtitle2?.copyWith(
                       fontSize: 14,
                     color: Theme.of(context).textTheme.headline4?.color
                   ),),
 
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [1, 2, 3, 4, 5,6]
-                          .map((e) => e>5 ? const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            child: Text("4/5"),
-                          ) :  Icon(
-                        Icons.star,
-                        size: 20,
-                        color: e < 4
-                            ? Colors.amber
-                            : const Color(0xffEDEDEF),
-                      ))
-                          .toList(),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 12),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [1, 2, 3, 4, 5,6]
+                  //         .map((e) => e>5 ? const Padding(
+                  //           padding: EdgeInsets.symmetric(horizontal: 8),
+                  //           child: Text("4/5"),
+                  //         ) :  Icon(
+                  //       Icons.star,
+                  //       size: 20,
+                  //       color: e < 4
+                  //           ? Colors.amber
+                  //           : const Color(0xffEDEDEF),
+                  //     ))
+                  //         .toList(),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text("A spectacular visual journey through 40 years of haute couture from one of the best-known and most trend-setting brands in fashion.",style: Theme.of(context).textTheme.subtitle1?.copyWith(

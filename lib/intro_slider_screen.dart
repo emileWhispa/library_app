@@ -1,6 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/authentication.dart';
 import 'package:library_app/home_screen.dart';
+import 'package:library_app/registration_family_screen.dart';
+import 'package:library_app/registration_school_account.dart';
 import 'package:library_app/super_base.dart';
 
 class IntroSliderScreen extends StatefulWidget{
@@ -65,7 +68,9 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                       color: c
                   )),
                   const Spacer(),
-                  ElevatedButton(onPressed: (){},style: ButtonStyle(
+                  ElevatedButton(onPressed: (){
+                    push(const RegistrationFamilyScreen());
+                  },style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)
                     )),
@@ -73,13 +78,19 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                   ), child: const Text("Families, Start Reading",style: TextStyle(
                     color: Color(0xff4393DF)
                   ),),),
-                  TextButton(onPressed: (){}, child: Text("Adult",style: TextStyle(
+                  TextButton(onPressed: (){
+                    push(const RegistrationFamilyScreen(type: "Adults",));
+                  }, child: Text("Adult",style: TextStyle(
                     color: c
                   ),)),
-                  TextButton(onPressed: (){}, child: Text("School",style: TextStyle(
+                  TextButton(onPressed: (){
+                    push(const RegistrationSchoolScreen());
+                    }, child: Text("School",style: TextStyle(
                       color: c
                   ))),
-                  TextButton(onPressed: (){}, child: Text("Have an account? Login",style: TextStyle(
+                  TextButton(onPressed: (){
+                    push(const Authentication());
+                  }, child: Text("Have an account? Login",style: TextStyle(
                       color: c
                   ))),
                 ],
@@ -115,7 +126,7 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                   )),
               ),onPressed: (){
                 if(_index >= 2){
-                  push(const HomeScreen(),replace: true);
+                  push(const Authentication(),replace: true);
                 }else{
                   _controller.animateToPage(_index+1);
                 }

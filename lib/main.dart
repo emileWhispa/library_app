@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:library_app/home_screen.dart';
 import 'package:library_app/intro_slider_screen.dart';
 import 'package:library_app/super_base.dart';
+
+import 'json/user.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,8 +53,18 @@ class _MyHomePageState extends Superbase<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), (){
-      push(const IntroSliderScreen(),replace: true);
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      var string = (await prefs).getString(userKey);
+
+      Timer(const Duration(seconds: 2), () {
+        if(string != null) {
+          User.user = User.fromJson(jsonDecode(string));
+          push(const HomeScreen(), replace: true);
+        }else{
+          push(const IntroSliderScreen(), replace: true);
+        }
+      });
+
     });
   }
 

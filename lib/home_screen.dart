@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/account_screen.dart';
 import 'package:library_app/homepage_screen.dart';
 
 class HomeScreen extends StatefulWidget{
@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomepageScreen(),
           Center(),
           Center(),
+          AccountScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -36,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(icon: Image.asset("assets/home_icon.png",color: _index == 0 ? c : Colors.grey),label: "Home"),
           BottomNavigationBarItem(icon: Image.asset("assets/bookmark_icon.png",color: _index == 1 ? c : Colors.grey),label: "My Books"),
-          BottomNavigationBarItem(icon: Image.asset("assets/setting_icon.png",color: _index == 2 ? c : Colors.grey),label: "Settings"),
+          BottomNavigationBarItem(icon: Image.asset("assets/events.png",color: _index == 2 ? c : Colors.grey),label: "Events"),
+          BottomNavigationBarItem(icon: Image.asset("assets/setting_icon.png",color: _index == 3 ? c : Colors.grey),label: "Settings"),
         ],
       ),
     );

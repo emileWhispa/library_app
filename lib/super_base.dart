@@ -45,7 +45,7 @@ class CurrencyInputFormatter extends TextInputFormatter {
 
 @optionalTypeArgs
 abstract class Superbase<T extends StatefulWidget> extends State<T>{
-  String get bigBase => "http://humanly.fund/api/";
+  String get bigBase => "http://64.227.105.251/api/v1/user/";
 
   String token =
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBjcGFpLnRlY2giLCJleHAiOjE2MDEyMTIzODF9.Lw8Acj_ldP4AakcucN3zKM7I1kTEqKTQc70VdfTga827oz1afKP9Gv54veYBVE0a4PEwN7jPt0xqefV_VsIMyg";
@@ -222,13 +222,13 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
     headers["Accept"] = "application/json";
 
     var prf = await prefs;
-    var tkn = prf.getString("token");
-    if (auth && (authKey != null || tkn != null || tokenValue != null)) {
-      headers['Authorization'] = 'Bearer ${ authKey ?? tokenValue ?? tkn}';
-    }
+    // var tkn = prf.getString("token");
+    // if (auth && (authKey != null || tkn != null || tokenValue != null)) {
+    //   headers['Authorization'] = 'Bearer ${ authKey ?? tokenValue ?? tkn}';
+    // }
 
     if( User.user != null){
-      headers['token'] = User.user?.token ??"";
+      headers['Authorization'] = "Bearer ${User.user?.token ??""}";
     }
 
     Options opt = Options(
