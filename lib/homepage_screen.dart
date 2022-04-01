@@ -33,7 +33,6 @@ loadCategories();
     ajax(url: "MobileHomepage",method: "POST",data: FormData.fromMap({
       "role":"Adults"
     }),onValue: (s,v){
-      print(s);
       setState(() {
         _list = (s['HomeCategories'] as Iterable).map((e) => Category.fromJson(e)).toList();
         _books = (s['RecentlyAddedBooks'] as Iterable).map((e) => Book.fromJson(e)).toList();
@@ -199,58 +198,63 @@ loadCategories();
 
           var item = _popularBooks[index];
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(7),
-                  child: Image(
-                    image: CachedNetworkImageProvider(item.image),
-                    frameBuilder: frameBuilder,
-                    height: 83,
-                    width: 70,
-                    fit: BoxFit.cover,
+          return InkWell(
+            onTap: (){
+              push(BookDetailScreen(book: item));
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(7),
+                    child: Image(
+                      image: CachedNetworkImageProvider(item.image),
+                      frameBuilder: frameBuilder,
+                      height: 83,
+                      width: 70,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.name,
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Text(
-                        item.category??"",
-                        style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                            color:
-                                Theme.of(context).textTheme.headline4?.color),
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 12),
-                      //   child: Row(
-                      //     children: [1, 2, 3, 4, 5]
-                      //         .map((e) => Icon(
-                      //               Icons.star,
-                      //               size: 15,
-                      //               color: e < 4
-                      //                   ? Colors.amber
-                      //                   : const Color(0xffEDEDEF),
-                      //             ))
-                      //         .toList(),
-                      //   ),
-                      // )
-                    ],
-                  ),
-                )),
-                const Icon(Icons.bookmark_add_outlined)
-              ],
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Text(
+                          item.category??"",
+                          style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                              color:
+                                  Theme.of(context).textTheme.headline4?.color),
+                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 12),
+                        //   child: Row(
+                        //     children: [1, 2, 3, 4, 5]
+                        //         .map((e) => Icon(
+                        //               Icons.star,
+                        //               size: 15,
+                        //               color: e < 4
+                        //                   ? Colors.amber
+                        //                   : const Color(0xffEDEDEF),
+                        //             ))
+                        //         .toList(),
+                        //   ),
+                        // )
+                      ],
+                    ),
+                  )),
+                  const Icon(Icons.bookmark_add_outlined)
+                ],
+              ),
             ),
           );
         },

@@ -29,7 +29,6 @@ class _AuthenticationState extends Superbase<Authentication> {
       "email":_phoneController.text,
       "password":_passwordController.text,
     }),onValue: (s,v){
-      print(s);
       if(s['response_status'] == 200 && s['user'] is Map){
         var user = User.fromJson(s);
         save(userKey, s);

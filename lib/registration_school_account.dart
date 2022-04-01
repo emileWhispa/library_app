@@ -44,8 +44,6 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
       "schoolName":_schoolNameController.text,
     }),onValue: (s,v){
 
-      print(s);
-      print(v);
       if(s['code'] == 200){
         goBack();
       }

@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/authentication.dart';
-import 'package:library_app/home_screen.dart';
 import 'package:library_app/registration_family_screen.dart';
 import 'package:library_app/registration_school_account.dart';
 import 'package:library_app/super_base.dart';

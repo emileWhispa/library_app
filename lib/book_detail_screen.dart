@@ -86,7 +86,7 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
               backgroundColor: MaterialStateProperty.all(const Color(0xff02A95C))
             ),
             onPressed: (){},
-            child: Text("Borrow Now for  5,000 RWF"),
+            child: const Text("Borrow Now for  5,000 RWF"),
           ),
         ),
       ),

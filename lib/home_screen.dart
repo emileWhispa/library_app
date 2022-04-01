@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/account_screen.dart';
+import 'package:library_app/event_screen.dart';
 import 'package:library_app/homepage_screen.dart';
 
 class HomeScreen extends StatefulWidget{
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: const [
           HomepageScreen(),
           Center(),
-          Center(),
+          EventScreen(),
           AccountScreen(),
         ],
       ),

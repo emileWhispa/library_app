@@ -79,6 +79,8 @@ flutter:
      - assets/book_pink.png
      - assets/open_book.png
      - assets/events.png
+     - assets/meeting.png
+     - assets/room.png
      - assets/family.png
      - assets/family2.png
      - assets/family3.png
