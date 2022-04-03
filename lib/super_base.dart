@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:library_app/json/user.dart';
+import 'json/book.dart';
 import 'reg_ex_input_formatter.dart';
 import 'stateful_builder_2.dart';
 import 'package:email_validator/email_validator.dart';
@@ -76,6 +77,39 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
     return saveVal(key, jsonEncode(val));
   }
 
+
+  String bookmarkKey = "bookmark-key";
+
+  Future<void> addToBookMark(Book book) async {
+    var list = await getBooks();
+    list.add(book);
+    return save(bookmarkKey, list);
+  }
+
+  Future<void> removeFromBookMark(Book book) async {
+    var list = await getBooks();
+    list.removeWhere((e)=>e.id == book.id);
+    return save(bookmarkKey, list);
+  }
+
+
+  static List<Book>? _bookmarks;
+
+  bool bookExists(Book book)=>_bookmarks?.any((e) => e.id == book.id) == true;
+
+  Future<List<Book>> getBooks() async {
+
+    if(_bookmarks != null){
+      return _bookmarks!;
+    }
+
+    var string = (await prefs).getString(bookmarkKey);
+    if(string != null){
+      _bookmarks = (jsonDecode(string) as Iterable).map((e) => Book.fromJson(e)).toList();
+    }
+
+    return _bookmarks ?? <Book>[];
+  }
 
 
   RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
@@ -229,6 +263,11 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
 
     if( User.user != null){
       headers['Authorization'] = "Bearer ${User.user?.token ??""}";
+      if(method == "POST"){
+        data = data ?? FormData();
+        data.fields.add(const MapEntry("role", "Adults"));
+        // print(User.user?.role);
+      }
     }
 
     Options opt = Options(

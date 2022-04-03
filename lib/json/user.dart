@@ -4,6 +4,7 @@ class User {
   String? phone;
   String? fName;
   String? lName;
+  String? role;
 
   static User? user;
 
@@ -11,6 +12,7 @@ class User {
       : token = map['access_token'],
         phone = map['user']['phone_number'],
         fName = map['user']['name'],
+        role = map['user']['role'],
         lName = map['user']['name'],
         email = map['user']['email'];
 

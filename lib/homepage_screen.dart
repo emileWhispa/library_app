@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/book_detail_screen.dart';
+import 'package:library_app/book_item_widget.dart';
+import 'package:library_app/category_screen.dart';
 import 'package:library_app/json/book.dart';
 import 'package:library_app/json/user.dart';
 import 'package:library_app/super_base.dart';
@@ -9,7 +11,8 @@ import 'package:library_app/super_base.dart';
 import 'json/category.dart';
 
 class HomepageScreen extends StatefulWidget {
-  const HomepageScreen({Key? key}) : super(key: key);
+  // ignore: prefer_const_constructors_in_immutables
+  HomepageScreen({Key? key}) : super(key: key);
 
   @override
   State<HomepageScreen> createState() => _HomepageScreenState();
@@ -30,9 +33,7 @@ loadCategories();
   }
 
   void loadCategories(){
-    ajax(url: "MobileHomepage",method: "POST",data: FormData.fromMap({
-      "role":"Adults"
-    }),onValue: (s,v){
+    ajax(url: "MobileHomepage",method: "POST",onValue: (s,v){
       setState(() {
         _list = (s['HomeCategories'] as Iterable).map((e) => Category.fromJson(e)).toList();
         _books = (s['RecentlyAddedBooks'] as Iterable).map((e) => Book.fromJson(e)).toList();
@@ -78,53 +79,31 @@ loadCategories();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 15,top: 5),
-                  child: Text(
-                    "Categories",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                 Padding(
+                  padding: const EdgeInsets.only(bottom: 15,top: 5),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          "Categories",
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                      TextButton(onPressed: (){
+                        push(Scaffold(appBar: AppBar(
+                          iconTheme: IconThemeData(
+                            color: Theme.of(context).textTheme.headline6?.color
+                          ),
+                          elevation: 3,
+                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                          titleTextStyle: Theme.of(context).textTheme.headline6,
+                          title: const Text("Categories"),
+                        ),body: CategoryScreen(list: _list)));
+                      }, child: const Text("More")),
+                    ],
                   ),
                 ),
-                GridView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                  children: _list
-                      .map((e) => Container(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    margin: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xffE5E5E5),
-                              offset: Offset(0.5,0.7),
-                              blurRadius: 9
-                            )
-                          ]
-                        ),
-                        child: Material(
-                          color: Theme.of(context).cardColor,
-                          child: InkWell(
-                            onTap: (){},
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                children: [
-                                  Expanded(child: Image(image: CachedNetworkImageProvider(e.image),frameBuilder: frameBuilder,)),
-                                  Text(e.name,textAlign: TextAlign.center,maxLines: 1,overflow: TextOverflow.ellipsis,style: const TextStyle(
-                                    fontSize: 13
-                                  ),)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ))
-                      .toList(),
-                ),
+                CategoryScreen(list: _list,scrollable: false,),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Text(
@@ -198,65 +177,7 @@ loadCategories();
 
           var item = _popularBooks[index];
 
-          return InkWell(
-            onTap: (){
-              push(BookDetailScreen(book: item));
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(7),
-                    child: Image(
-                      image: CachedNetworkImageProvider(item.image),
-                      frameBuilder: frameBuilder,
-                      height: 83,
-                      width: 70,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.name,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        Text(
-                          item.category??"",
-                          style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                              color:
-                                  Theme.of(context).textTheme.headline4?.color),
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 12),
-                        //   child: Row(
-                        //     children: [1, 2, 3, 4, 5]
-                        //         .map((e) => Icon(
-                        //               Icons.star,
-                        //               size: 15,
-                        //               color: e < 4
-                        //                   ? Colors.amber
-                        //                   : const Color(0xffEDEDEF),
-                        //             ))
-                        //         .toList(),
-                        //   ),
-                        // )
-                      ],
-                    ),
-                  )),
-                  const Icon(Icons.bookmark_add_outlined)
-                ],
-              ),
-            ),
-          );
+          return BookItemWidgetScreen(book: item);
         },
       ),
     );

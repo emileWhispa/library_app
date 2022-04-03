@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/account_screen.dart';
+import 'package:library_app/bookmark_screen.dart';
 import 'package:library_app/event_screen.dart';
 import 'package:library_app/homepage_screen.dart';
 
@@ -14,24 +15,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _index = 0;
 
+  final _bookmarkKey = GlobalKey<BookmarkScreenState>();
+
   @override
   Widget build(BuildContext context) {
     var c = Theme.of(context).primaryColor;
     return Scaffold(
       body: IndexedStack(
         index: _index,
-        children: const [
+        children: [
           HomepageScreen(),
-          Center(),
-          EventScreen(),
-          AccountScreen(),
+          BookmarkScreen(key: _bookmarkKey),
+          const EventScreen(),
+          const AccountScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index){
           setState(() {
             _index = index;
+            if(_index == 1){
+              _bookmarkKey.currentState?.reload();
+            }
           });
+
         },
         type: BottomNavigationBarType.fixed,
         currentIndex: _index,
