@@ -34,7 +34,7 @@ class _EventScreenState extends Superbase<EventScreen> {
       setState(() {
         _list = (s['Events'] as Iterable?)?.map((e) => Event.fromJson(e)).toList()??[];
       });
-    },error: (s,v)=>print(s));
+    });
   }
 
   @override

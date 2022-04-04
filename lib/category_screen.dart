@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/category_book_screen.dart';
 import 'package:library_app/json/category.dart';
 import 'package:library_app/super_base.dart';
 
@@ -31,8 +31,7 @@ class _CategoryScreenState extends Superbase<CategoryScreen> {
   List<Category> get list => _list ?? widget.list;
 
   Future<void> loadData(){
-    return ajax(url: "AllCategories",method: "POST",error: (s,b)=>print(s),onValue: (s,v){
-      print(s);
+    return ajax(url: "AllCategories",method: "POST",onValue: (s,v){
       setState(() {
         _list = (s['AllCategory'] as Iterable?)?.map((e) => Category.fromJson(e)).toList() ?? [];
       });
@@ -65,7 +64,9 @@ class _CategoryScreenState extends Superbase<CategoryScreen> {
           child: Material(
             color: Theme.of(context).cardColor,
             child: InkWell(
-              onTap: (){},
+              onTap: (){
+                push(CategoryBookScreen(category: e));
+              },
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 padding: const EdgeInsets.all(8),

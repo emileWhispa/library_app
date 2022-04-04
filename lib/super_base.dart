@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:library_app/json/user.dart';
+import 'json/user.dart';
 import 'json/book.dart';
 import 'reg_ex_input_formatter.dart';
 import 'stateful_builder_2.dart';
@@ -266,6 +266,7 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
       if(method == "POST"){
         data = data ?? FormData();
         data.fields.add(const MapEntry("role", "Adults"));
+        data.fields.add(MapEntry("user_id", "${User.user?.id}"));
         // print(User.user?.role);
       }
     }

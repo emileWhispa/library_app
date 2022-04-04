@@ -5,6 +5,7 @@ class User {
   String? fName;
   String? lName;
   String? role;
+  int id;
 
   static User? user;
 
@@ -13,6 +14,7 @@ class User {
         phone = map['user']['phone_number'],
         fName = map['user']['name'],
         role = map['user']['role'],
+        id = map['user']['id'],
         lName = map['user']['name'],
         email = map['user']['email'];
 

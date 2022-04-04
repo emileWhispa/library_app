@@ -26,7 +26,7 @@ class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
         push(BookDetailScreen(book: item));
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -52,8 +52,7 @@ class BookmarkScreenState extends Superbase<BookmarkScreen> {
       body: RefreshIndicator(
         key: _key,
         onRefresh: loadData,
-        child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 20),itemCount: list.length,itemBuilder: (context, index) {
+        child: ListView.builder(itemCount: list.length,itemBuilder: (context, index) {
           return BookItemWidgetScreen(book: list[index],parentReload: reload,);
         }),
       ),
