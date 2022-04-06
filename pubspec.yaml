@@ -74,6 +74,9 @@ flutter:
      - assets/cart_icon.png
      - assets/home_icon.png
      - assets/hubert.png
+     - assets/slide1.png
+     - assets/slide2.png
+     - assets/slide3.png
      - assets/setting_icon.png
      - assets/book_image.png
      - assets/book_pink.png
@@ -81,6 +84,7 @@ flutter:
      - assets/events.png
      - assets/meeting.png
      - assets/room.png
+     - assets/cash.png
      - assets/family.png
      - assets/family2.png
      - assets/family3.png
@@ -105,6 +109,20 @@ flutter:
          - asset: fonts/comicz.ttf
          - asset: fonts/design.graffiti.comicsansms.ttf
          - asset: fonts/design.graffiti.comicsansmsgras.ttf
+    - family: Mikado
+      fonts:
+         - asset: fonts/MikadoBlack.otf
+         - asset: fonts/MikadoBlack-Italic.otf
+         - asset: fonts/MikadoBold.otf
+         - asset: fonts/MikadoBold-Italic.otf
+         - asset: fonts/MikadoLight.otf
+         - asset: fonts/MikadoLight-Italic.otf
+         - asset: fonts/MikadoMedium.otf
+         - asset: fonts/MikadoMedium-Italic.otf
+         - asset: fonts/MikadoRegular.otf
+         - asset: fonts/MikadoRegular-Italic.otf
+         - asset: fonts/MikadoUltra.otf
+         - asset: fonts/MikadoUltra-Italic.otf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

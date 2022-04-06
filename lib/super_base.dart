@@ -265,7 +265,7 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
       headers['Authorization'] = "Bearer ${User.user?.token ??""}";
       if(method == "POST"){
         data = data ?? FormData();
-        data.fields.add(const MapEntry("role", "Adults"));
+        data.fields.add(MapEntry("role", User.user?.role ?? "Adults"));
         data.fields.add(MapEntry("user_id", "${User.user?.id}"));
         // print(User.user?.role);
       }

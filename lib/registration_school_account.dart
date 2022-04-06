@@ -44,7 +44,7 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
       "schoolName":_schoolNameController.text,
     }),onValue: (s,v){
 
-      if(s['code'] == 200){
+      if(s['response_status'] == 200){
         goBack();
       }
 
@@ -276,7 +276,7 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
                     ))
                 ), child: const Text("Sign Up")),
               ),
-              const SizedBox(height: 50,),
+              const SizedBox(height: 30,),
               Align(
                 alignment: Alignment.center,
                 child: Row(

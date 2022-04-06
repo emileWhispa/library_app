@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
         primaryColor: const Color(0xff02A95C),
-        fontFamily: 'Comic Sans MS'
+        fontFamily: 'Mikado'
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

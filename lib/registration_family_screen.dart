@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/select_plan_screen.dart';
 import 'package:library_app/super_base.dart';
 
 class RegistrationFamilyScreen extends StatefulWidget{
@@ -34,8 +35,9 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
       "ConfirmPassword":_passwordController.text,
       "role":widget.type
     }),onValue: (s,v){
-      if(s['code'] == 200){
-        goBack();
+      print(s);
+      if(s['response_status'] == 200){
+        push(const SelectPlanScreen());
       }
 
       showSnack(s['message']);
@@ -192,7 +194,7 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
                     ))
                 ), child: const Text("Sign Up")),
               ),
-              const SizedBox(height: 100,),
+              const SizedBox(height: 30,),
               Align(
                 alignment: Alignment.center,
                 child: Row(

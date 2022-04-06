@@ -52,11 +52,19 @@ class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
                         item.name,
                         style: Theme.of(context).textTheme.headline6,
                       ),
-                      Text(
-                        item.category??"",
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        child: Text(
+                          item.category??"",
+                          style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                              color:
+                              const Color(0xffFED857)),
+                        ),
+                      ),
+                      Text("Short Description will goe here  Short Description will go..",
                         style: Theme.of(context).textTheme.subtitle2?.copyWith(
                             color:
-                            Theme.of(context).textTheme.headline4?.color),
+                            Theme.of(context).textTheme.headline5?.color),
                       ),
                       // Padding(
                       //   padding: const EdgeInsets.only(top: 12),

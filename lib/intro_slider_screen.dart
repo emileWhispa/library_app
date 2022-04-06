@@ -25,9 +25,9 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
       body: Stack(
         children: [
           CarouselSlider(carouselController: _controller,items: [
-            SliderItem("family.png", "Title Goes here.....", "Short description will go here Short description will go here Short descriptionShort description will go here will go here"),
-            SliderItem("family2.png", "Title Goes here.....", "Short description will go here Short description will go here Short descriptionShort description will go here will go here"),
-            SliderItem("family3.png", "Title Goes here.....", "Short description will go here Short description will go here Short descriptionShort description will go here will go here")
+            SliderItem("slide1.png", "Title Goes here.....", "Short description will go here Short description will go here Short descriptionShort description will go here will go here"),
+            SliderItem("slide2.png", "Title Goes here.....", "Short description will go here Short description will go here Short descriptionShort description will go here will go here"),
+            SliderItem("slide3.png", "Title Goes here.....", "Short description will go here Short description will go here Short descriptionShort description will go here will go here")
           ].map((e) => Container(
             width: double.infinity,
             decoration: BoxDecoration(
