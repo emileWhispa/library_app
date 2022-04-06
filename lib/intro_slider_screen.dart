@@ -35,7 +35,7 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(20).copyWith(
-                top: MediaQuery.of(context).padding.top,
+                top: MediaQuery.of(context).padding.top + 30,
                 bottom: 70
               ),
               child: Column(
@@ -43,7 +43,9 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                 children: [
                   const Text(
                     'ESPACE',
+
                     style: TextStyle(
+                      height: 1,
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                         color: Color(0xffFED857)
@@ -52,6 +54,7 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                   Text(
                     'MADIBA',
                     style: TextStyle(
+                      height: 1,
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                         color: c
@@ -60,6 +63,7 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                   const SizedBox(height: 20),
                   Text(e.title,style: TextStyle(
                     fontSize: 20,
+                    fontWeight: FontWeight.w700,
                     color: c
                   ),),
                   Text(e.description,style: TextStyle(
@@ -75,21 +79,29 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                     )),
                     backgroundColor: MaterialStateProperty.all(Theme.of(context).scaffoldBackgroundColor)
                   ), child: const Text("Families, Start Reading",style: TextStyle(
-                    color: Color(0xff4393DF)
+                    color: Color(0xff4393DF),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800
                   ),),),
                   TextButton(onPressed: (){
                     push(const RegistrationFamilyScreen(type: "Adults",));
                   }, child: Text("Adult",style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
                     color: c
                   ),)),
                   TextButton(onPressed: (){
                     push(const RegistrationSchoolScreen());
                     }, child: Text("School",style: TextStyle(
-                      color: c
+                      color: c,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800
                   ))),
                   TextButton(onPressed: (){
                     push(const Authentication());
                   }, child: Text("Have an account? Login",style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
                       color: c
                   ))),
                 ],

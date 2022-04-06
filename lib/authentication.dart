@@ -76,7 +76,7 @@ class _AuthenticationState extends Superbase<Authentication> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40,top: 15),
-                  child: Text("Login to your Humanly account",style: Theme.of(context).textTheme.headline6,),
+                  child: Text("Login to your Library account",style: Theme.of(context).textTheme.headline6,),
                 ),
               ),
               Padding(

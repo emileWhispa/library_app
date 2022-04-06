@@ -31,15 +31,30 @@ class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(7),
-              child: Image(
-                image: CachedNetworkImageProvider(item.image),
-                frameBuilder: frameBuilder,
-                height: 83,
-                width: 70,
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(7),
+                  child: Image(
+                    image: CachedNetworkImageProvider(item.image),
+                    frameBuilder: frameBuilder,
+                    height: 83,
+                    width: 70,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(bottom: 5,left: 5,child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.circular(3)
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 6),
+                  child: const Text("EN",style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11.2
+                  ),),
+                ))
+              ],
             ),
             Expanded(
                 child: Padding(
@@ -53,7 +68,7 @@ class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        padding: const EdgeInsets.symmetric(vertical: 1),
                         child: Text(
                           item.category??"",
                           style: Theme.of(context).textTheme.subtitle2?.copyWith(

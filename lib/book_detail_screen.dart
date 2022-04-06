@@ -14,6 +14,7 @@ class BookDetailScreen extends StatefulWidget{
 class _BookDetailScreenState extends Superbase<BookDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    var exist = bookExists(widget.book);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -21,8 +22,21 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
         IconThemeData(color: Theme.of(context).textTheme.headline6?.color),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.bookmark_border)),
-          PopupMenuButton(itemBuilder: (context)=>[]),
+          IconButton(onPressed: (){
+
+            String msg ="Book added to bookmark";
+            if( exist ) {
+              msg ="Book removed from bookmark";
+              removeFromBookMark(widget.book);
+            } else {
+              addToBookMark(widget.book);
+            }
+            setState(() {
+              // widget.parentReload?.call();
+              showSnack(msg);
+            });
+          },icon: Icon( exist ? Icons.bookmark : Icons.bookmark_add_outlined,color: exist ? Colors.amber : null,))
+          // PopupMenuButton(itemBuilder: (context)=>[]),
         ],
       ),
       body: ListView(
@@ -36,6 +50,17 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
                   Text(widget.book.name,textAlign: TextAlign.center,style: const TextStyle(
                     fontSize: 25
                   ),),
+                  Text("Suzy Menkes",textAlign: TextAlign.center,style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                      fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Theme.of(context).textTheme.headline4?.color
+                  ),),
+                  Text("Language : English",textAlign: TextAlign.center,style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                      fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Theme.of(context).textTheme.headline6?.color
+                  ),),
+                  const SizedBox(height: 5,),
                   Text(widget.book.category??"",textAlign: TextAlign.center,style: Theme.of(context).textTheme.subtitle2?.copyWith(
                       fontSize: 14,
                     color: Theme.of(context).textTheme.headline4?.color
@@ -86,7 +111,7 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
               backgroundColor: MaterialStateProperty.all(const Color(0xff02A95C))
             ),
             onPressed: (){},
-            child: const Text("Borrow Now for  5,000 RWF"),
+            child: const Text("Borrow Now"),
           ),
         ),
       ),

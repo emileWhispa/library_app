@@ -93,6 +93,8 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
   }
 
 
+  bool get isFamily=>User.user?.role == "Family";
+
   static List<Book>? _bookmarks;
 
   bool bookExists(Book book)=>_bookmarks?.any((e) => e.id == book.id) == true;

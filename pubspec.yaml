@@ -78,6 +78,12 @@ flutter:
      - assets/slide2.png
      - assets/slide3.png
      - assets/setting_icon.png
+     - assets/kids2.png
+     - assets/refresh.png
+     - assets/my_book.png
+     - assets/support.png
+     - assets/terms.png
+     - assets/about.png
      - assets/book_image.png
      - assets/book_pink.png
      - assets/open_book.png

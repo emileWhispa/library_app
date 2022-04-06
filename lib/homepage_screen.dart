@@ -18,7 +18,6 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends Superbase<HomepageScreen> {
-
   List<Category> _list = [];
   List<Book> _books = [];
   List<Book> _popularBooks = [];
@@ -27,20 +26,30 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-loadCategories();
+      loadCategories();
     });
   }
 
-  void loadCategories(){
-    ajax(url: "MobileHomepage",method: "POST",onValue: (s,v){
-      setState(() {
-        _list = (s['HomeCategories'] as Iterable).map((e) => Category.fromJson(e)).toList();
-        _books = (s['RecentlyAddedBooks'] as Iterable).map((e) => Book.fromJson(e)).toList();
-        _popularBooks = (s['PopularBooks'] as Iterable).map((e) => Book.fromJson(e)).toList();
-      });
-    },error: (s,v){
-
-    });
+  void loadCategories() {
+    ajax(
+        url: "MobileHomepage",
+        method: "POST",
+        onValue: (s, v) {
+          print(s);
+          setState(() {
+            _list = (s['HomeCategories'] as Iterable)
+                .map((e) => Category.fromJson(e))
+                .toList();
+            _books = (s['RecentlyAddedBooks'] as Iterable)
+                .map((e) => Book.fromJson(e))
+                .toList();
+            _popularBooks = (s['PopularBooks'] as Iterable)
+                .map((e) => Book.fromJson(e))
+                .toList();
+          });
+        },
+        error: (s, v) {
+        });
   }
 
   @override
@@ -52,15 +61,16 @@ loadCategories();
         titleSpacing: 10,
         title: Row(
           children: [
-             Padding(
+            Padding(
               padding: const EdgeInsets.only(right: 10),
               child: CircleAvatar(
-                child: Text((User.user?.fName??"XA").toUpperCase().substring(0,1)),
+                child: Text(
+                    (User.user?.fName ?? "XA").toUpperCase().substring(0, 1)),
                 radius: 14,
               ),
             ),
             Text(
-              "Hi, ${User.user?.fName??""}",
+              "Hi, ${User.user?.fName ?? ""}",
               style: Theme.of(context).textTheme.headline6,
             ),
           ],
@@ -70,7 +80,7 @@ loadCategories();
         actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
       ),
       body: ListView.builder(
-        itemCount: _popularBooks.length+1,
+        itemCount: _popularBooks.length + 1,
         itemBuilder: (context, index) {
           index = index - 1;
           if (index < 0) {
@@ -79,36 +89,49 @@ loadCategories();
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Padding(
-                    padding: const EdgeInsets.only(bottom: 15,top: 5),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15, top: 5),
                     child: Row(
                       children: [
                         const Expanded(
                           child: Text(
                             "Categories",
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w800),
                           ),
                         ),
-                        TextButton(onPressed: (){
-                          push(Scaffold(appBar: AppBar(
-                            iconTheme: IconThemeData(
-                              color: Theme.of(context).textTheme.headline6?.color
-                            ),
-                            elevation: 3,
-                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                            titleTextStyle: Theme.of(context).textTheme.headline6,
-                            title: const Text("Categories"),
-                          ),body: CategoryScreen(list: _list)));
-                        }, child: const Text("More")),
+                        TextButton(
+                            onPressed: () {
+                              push(Scaffold(
+                                  appBar: AppBar(
+                                    iconTheme: IconThemeData(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.color),
+                                    elevation: 3,
+                                    backgroundColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    titleTextStyle:
+                                        Theme.of(context).textTheme.headline6,
+                                    title: const Text("Categories"),
+                                  ),
+                                  body: CategoryScreen(list: _list)));
+                            },
+                            child: const Text("More")),
                       ],
                     ),
                   ),
-                  CategoryScreen(list: _list,scrollable: false,),
+                  CategoryScreen(
+                    list: _list,
+                    scrollable: false,
+                  ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Text(
                       "Recent Books",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
                     ),
                   ),
                   SizedBox(
@@ -123,28 +146,48 @@ loadCategories();
                             child: Padding(
                               padding: const EdgeInsets.only(right: 20),
                               child: InkWell(
-                                onTap: (){
-                                  push( BookDetailScreen(book: book,));
+                                onTap: () {
+                                  push(BookDetailScreen(
+                                    book: book,
+                                  ));
                                 },
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: Image(
-                                              image: CachedNetworkImageProvider(book.image),
-                                              fit: BoxFit.cover,
-                                            ))),
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image(
+                                                  image: CachedNetworkImageProvider(
+                                                      book.image),
+                                                  fit: BoxFit.cover,
+                                                )),
+                                            Positioned(bottom: 10,left: 10,child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.black87,
+                                                  borderRadius: BorderRadius.circular(5)
+                                              ),
+                                              padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 6),
+                                              child: const Text("EN",style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11.2
+                                              ),),
+                                            ))
+                                          ],
+                                        )),
                                     const SizedBox(height: 10),
                                     Text(
                                       book.name,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context).textTheme.headline6,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
                                     ),
                                     Text(
-                                      book.category??"",
+                                      book.category ?? "",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
@@ -167,14 +210,14 @@ loadCategories();
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Text(
                       "Popular Books",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
                     ),
                   ),
                 ],
               ),
             );
           }
-
 
           var item = _popularBooks[index];
 
