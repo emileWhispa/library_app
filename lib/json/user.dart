@@ -1,3 +1,5 @@
+import 'package:library_app/json/plan.dart';
+
 class User {
   String? token;
   String? email;
@@ -9,15 +11,28 @@ class User {
 
   static User? user;
 
-  User.fromJson(Map<String, dynamic> map)
+  User.fromJson(Map<String, dynamic> map,{String userKey='user'})
       : token = map['access_token'],
-        phone = map['user']['phone_number'],
-        fName = map['user']['name'],
-        role = map['user']['role'],
-        id = map['user']['id'],
-        lName = map['user']['name'],
-        email = map['user']['email'];
+        phone = map[userKey]['phone_number'],
+        fName = map[userKey]['name'],
+        role = map[userKey]['role'],
+        id = map[userKey]['id'],
+        lName = map[userKey]['name'],
+        email = map[userKey]['email'];
+
+  Map<String,dynamic> toJson()=>{
+    "access_token":token,
+    "user":{
+      "phone_number":phone,
+      "name":fName,
+      "role":role,
+      "id":id,
+      "email":email,
+    }
+  };
 
 
   bool get hasPhoneAndEmail=>email != null && phone != null;
+
+  Plan? plan;
 }

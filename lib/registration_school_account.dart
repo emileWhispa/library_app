@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/select_plan_screen.dart';
 import 'package:library_app/super_base.dart';
+
+import 'json/user.dart';
 
 class RegistrationSchoolScreen extends StatefulWidget{
   const RegistrationSchoolScreen({Key? key}) : super(key: key);
@@ -44,8 +47,11 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
       "schoolName":_schoolNameController.text,
     }),onValue: (s,v){
 
+
       if(s['response_status'] == 200){
-        goBack();
+        User.user = User.fromJson(s,userKey: "UserInfo");
+        save(userKey, User.user);
+        push(const SelectPlanScreen());
       }
 
       showSnack(s['message']);

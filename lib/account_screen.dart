@@ -38,7 +38,7 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text("${User.user?.lName}",style: Theme.of(context).textTheme.headline4,textAlign: TextAlign.center,),
-                  Text("${User.user?.phone??''}${User.user?.hasPhoneAndEmail == true ? '/':''}${User.user?.email??''}",style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                  Text("${User.user?.phone??''}${User.user?.hasPhoneAndEmail == true ? '\n':''}${User.user?.email??''}",style: Theme.of(context).textTheme.subtitle1?.copyWith(
                     color: Theme.of(context).textTheme.headline4?.color
                   ),textAlign: TextAlign.center,),
                 ],
@@ -85,7 +85,7 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                           children: [
                             Image.asset("assets/refresh.png"),
                             const SizedBox(width: 7),
-                            Text("Trial",style: Theme.of(context).textTheme.subtitle1,),
+                            Text(User.user?.plan?.name??"",style: Theme.of(context).textTheme.subtitle1,),
                           ],
                         ),
                       ),
@@ -193,6 +193,7 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                 var b = await confirmDialog();
                 if(b){
                   (await prefs).clear();
+                  User.user = null;
                   push(const IntroSliderScreen(),replaceAll: true);
                 }
               }, child: const Text("Sign Out")),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:library_app/select_plan_screen.dart';
 import 'package:library_app/super_base.dart';
 
+import 'json/user.dart';
+
 class RegistrationFamilyScreen extends StatefulWidget{
   final String type;
   const RegistrationFamilyScreen({Key? key, this.type = "Family"}) : super(key: key);
@@ -35,8 +37,9 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
       "ConfirmPassword":_passwordController.text,
       "role":widget.type
     }),onValue: (s,v){
-      print(s);
       if(s['response_status'] == 200){
+        User.user = User.fromJson(s,userKey: "UserInfo");
+        save(userKey, User.user);
         push(const SelectPlanScreen());
       }
 
@@ -49,6 +52,7 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
         child: Form(

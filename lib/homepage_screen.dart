@@ -5,6 +5,8 @@ import 'package:library_app/book_item_widget.dart';
 import 'package:library_app/category_screen.dart';
 import 'package:library_app/json/book.dart';
 import 'package:library_app/json/user.dart';
+import 'package:library_app/search_delegate.dart';
+import 'package:library_app/search_screen.dart';
 import 'package:library_app/super_base.dart';
 
 import 'json/category.dart';
@@ -35,7 +37,6 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
         url: "MobileHomepage",
         method: "POST",
         onValue: (s, v) {
-          print(s);
           setState(() {
             _list = (s['HomeCategories'] as Iterable)
                 .map((e) => Category.fromJson(e))
@@ -77,7 +78,11 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
         ),
         iconTheme:
             IconThemeData(color: Theme.of(context).textTheme.headline6?.color),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        actions: [IconButton(onPressed: () {
+          showSearch(context: context, delegate: SearchDemoSearchDelegate((query){
+            return SearchScreen(query: query);
+          }));
+        }, icon: const Icon(Icons.search))],
       ),
       body: ListView.builder(
         itemCount: _popularBooks.length + 1,
@@ -171,7 +176,7 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
                                                   borderRadius: BorderRadius.circular(5)
                                               ),
                                               padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 6),
-                                              child: const Text("EN",style: TextStyle(
+                                              child: Text((book.lang??"Lang").substring(0,2).toUpperCase(),style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 11.2
                                               ),),

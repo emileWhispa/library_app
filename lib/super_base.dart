@@ -83,12 +83,16 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
   Future<void> addToBookMark(Book book) async {
     var list = await getBooks();
     list.add(book);
+    if(!bookExists(book)) {
+      _bookmarks?.add(book);
+    }
     return save(bookmarkKey, list);
   }
 
   Future<void> removeFromBookMark(Book book) async {
     var list = await getBooks();
     list.removeWhere((e)=>e.id == book.id);
+    _bookmarks?.removeWhere((e)=>e.id == book.id);
     return save(bookmarkKey, list);
   }
 

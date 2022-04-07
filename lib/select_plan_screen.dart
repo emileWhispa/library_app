@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/home_screen.dart';
+import 'package:library_app/json/plan.dart';
+import 'package:library_app/json/user.dart';
 import 'package:library_app/super_base.dart';
 
 class SelectPlanScreen extends StatefulWidget{
@@ -12,6 +15,8 @@ class _SelectPlanScreenState extends Superbase<SelectPlanScreen> {
 
   final _key = GlobalKey<RefreshIndicatorState>();
 
+  List<Plan> _list = [];
+
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -24,6 +29,9 @@ class _SelectPlanScreenState extends Superbase<SelectPlanScreen> {
   Future<void> loadPlans(){
     return ajax(url: "AllPlans",method: "POST",error: (s,v)=>print(s),onValue: (object,url){
       print(object);
+      setState(() {
+        _list = (object['AllPlan'] as Iterable).map((e) => Plan.fromJson(e)).toList();
+      });
     });
   }
 
@@ -58,13 +66,17 @@ class _SelectPlanScreenState extends Superbase<SelectPlanScreen> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: ["Free","Standard","Premium"].map((e) => Card(
+                  children: _list.map((e) => Card(
                     clipBehavior: Clip.antiAlias,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)
                     ),
                     child: InkWell(
-                      onTap: (){},
+                      onTap: ()async{
+                        await save("plan", e);
+                        User.user?.plan = e;
+                        push(const HomeScreen(),replaceAll: true);
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(32.0),
                         child: Row(
@@ -73,17 +85,17 @@ class _SelectPlanScreenState extends Superbase<SelectPlanScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Text(e,style: const TextStyle(
+                                  Text(e.name,style: const TextStyle(
                                     color: Color(0xff02A95C),
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700
                                   ),),
-                                  const Text("1 Book",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16),),
-                                  const Text("3 Months",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16),),
+                                  Text("${e.allowedBooks} Book",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 16),),
+                                   Text("${e.period} Months",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 16),),
 
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 6),
-                                    child: Text("3000 RWF",style: TextStyle(fontWeight: FontWeight.w700,color: Color(0xffB10707),fontSize: 16),),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: Text("${fmtNbr(e.amount)} RWF",style: const TextStyle(fontWeight: FontWeight.w700,color: Color(0xffB10707),fontSize: 16),),
                                   ),
                                 ],
                               ),

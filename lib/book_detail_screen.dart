@@ -55,7 +55,7 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
                     fontWeight: FontWeight.normal,
                     color: Theme.of(context).textTheme.headline4?.color
                   ),),
-                  Text("Language : English",textAlign: TextAlign.center,style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                  Text("Language : ${widget.book.lang??""}",textAlign: TextAlign.center,style: Theme.of(context).textTheme.subtitle2?.copyWith(
                       fontSize: 14,
                     fontWeight: FontWeight.normal,
                     color: Theme.of(context).textTheme.headline6?.color

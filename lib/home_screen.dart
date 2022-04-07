@@ -3,7 +3,6 @@ import 'package:library_app/account_screen.dart';
 import 'package:library_app/bookmark_screen.dart';
 import 'package:library_app/event_screen.dart';
 import 'package:library_app/homepage_screen.dart';
-import 'package:library_app/json/user.dart';
 import 'package:library_app/kids_profile_screen.dart';
 import 'package:library_app/super_base.dart';
 
