@@ -137,7 +137,7 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
                   )),
               ),onPressed: (){
                 if(_index >= 2){
-                  push(const Authentication(),replace: true);
+                  push(const Authentication());
                 }else{
                   _controller.animateToPage(_index+1);
                 }
