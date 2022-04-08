@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/json/event.dart';
 import 'package:library_app/super_base.dart';
@@ -12,6 +13,28 @@ class EventDetailScreen extends StatefulWidget{
 }
 
 class _EventDetailScreenState extends Superbase<EventDetailScreen> {
+  
+  bool _attending = false;
+
+  String _message = "I Will Attend";
+  
+  Future<void> attend() async {
+    setState(() {
+      _attending = true;
+    });
+    await ajax(url: "AttendEvent",method: "POST",data: FormData.fromMap({"event_id":widget.event.id}),error: (s,v)=>print(s),onValue: (s,v){
+      // print(s);
+      setState(() {
+        _message = s['message']??'';
+        showSnack(_message);
+      });
+    });
+
+    setState(() {
+      _attending = false;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,16 +121,15 @@ class _EventDetailScreenState extends Superbase<EventDetailScreen> {
 
                         Padding(
                           padding: const EdgeInsets.all(20),
-                          child:  ElevatedButton(onPressed: (){
-
-
+                          child: _attending ? const Center(child: CircularProgressIndicator(),) :  ElevatedButton(onPressed: (){
+                            attend();
                           },style: ButtonStyle(
                             elevation: MaterialStateProperty.all(0),
                               padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
                               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12)
                               ))
-                          ), child: const Text("I Will Attend")),
+                          ), child: Text(_message)),
                         ),
                       ],
                     ),

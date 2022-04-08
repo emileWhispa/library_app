@@ -8,8 +8,9 @@ import 'book_detail_screen.dart';
 class BookItemWidgetScreen extends StatefulWidget {
   final Book book;
   final VoidCallback? parentReload;
+  final bool hideFavIcon;
 
-  const BookItemWidgetScreen({Key? key, required this.book, this.parentReload})
+  const BookItemWidgetScreen({Key? key, required this.book, this.parentReload, this.hideFavIcon = false})
       : super(key: key);
 
   @override
@@ -106,7 +107,7 @@ class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
                 ],
               ),
             )),
-            IconButton(
+            widget.hideFavIcon ? const SizedBox.shrink() : IconButton(
                 onPressed: () {
                   String msg = "Book added to bookmark";
                   if (exist) {

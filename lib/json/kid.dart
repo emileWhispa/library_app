@@ -1,10 +1,16 @@
-class Kid{
+class Kid {
   int id;
   String? name;
   String? age;
 
-  Kid.fromJson(Map<String,dynamic> map):id = map['id'],name = map['KidName'],age = map['KidAgeRange'];
+  Kid.fromJson(Map<String, dynamic> map, {String? activeId})
+      : id = map['id'],
+        name = map['KidName'],
+        active = activeId == "${map['id']}",
+        age = map['KidAgeRange'];
 
+  String get subName =>
+      (name ?? "").length > 3 ? name!.substring(0, 3) : name ?? "";
 
-  String get subName=>(name??"").length>3 ? name!.substring(0,3) : name??"";
+  bool active = false;
 }

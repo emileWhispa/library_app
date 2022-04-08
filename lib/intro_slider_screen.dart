@@ -111,7 +111,7 @@ class _IntroSliderScreenState extends Superbase<IntroSliderScreen> {
             setState(() {
               _index = index;
             });
-          },height: double.infinity,viewportFraction: 1)),
+          },autoPlay: true,height: double.infinity,viewportFraction: 1)),
           Positioned(bottom: 30,left: 0,right: 0,child: Row(
             children: [
               Expanded(

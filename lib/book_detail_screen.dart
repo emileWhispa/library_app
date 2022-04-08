@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/json/book.dart';
 import 'package:library_app/super_base.dart';
@@ -12,6 +13,29 @@ class BookDetailScreen extends StatefulWidget{
 }
 
 class _BookDetailScreenState extends Superbase<BookDetailScreen> {
+  bool _attending = false;
+
+  Future<void> attend() async {
+    setState(() {
+      _attending = true;
+    });
+    await ajax(url: "BorrowBooks",method: "POST",data: FormData.fromMap({"book_id":widget.book.id}),error: (s,v) {
+      if(s is Map){
+        showSnack(s['message']??'');
+      }
+    },onValue: (s,v){
+      // print(s);
+      setState(() {
+        var _message = s['message']??'';
+        showSnack(_message);
+      });
+    });
+
+    setState(() {
+      _attending = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var exist = bookExists(widget.book);
@@ -99,7 +123,12 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: ElevatedButton(
+          child: _attending ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CircularProgressIndicator(),
+            ],
+          ) : ElevatedButton(
             style: ButtonStyle(
               elevation: MaterialStateProperty.all(0.6),
               shape: MaterialStateProperty.all(
@@ -110,7 +139,7 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
               padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
               backgroundColor: MaterialStateProperty.all(const Color(0xff02A95C))
             ),
-            onPressed: (){},
+            onPressed: attend,
             child: const Text("Borrow Now"),
           ),
         ),

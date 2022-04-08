@@ -28,10 +28,12 @@ class _KidsProfileScreenState extends Superbase<KidsProfileScreen> {
   List<Kid> _list = [];
 
 
-  Future<void> loadData(){
+  Future<void> loadData() async {
+    var key = (await prefs).getString("active_profile");
+
     return ajax(url: "ShowKidsProfile",method: "POST",onValue: (obj,url){
       setState(() {
-        _list = (obj['KidsProfile'] as Iterable).map((e) => Kid.fromJson(e)).toList();
+        _list = (obj['KidsProfile'] as Iterable).map((e) => Kid.fromJson(e,activeId: key)).toList();
       });
     });
   }
@@ -63,16 +65,39 @@ class _KidsProfileScreenState extends Superbase<KidsProfileScreen> {
                 if(index < 0) {
                   await push(const CreateKidProfileScreen());
                   _key.currentState?.show();
+                }else{
+                  setState(() {
+                    for (var element in _list) {element.active = false;}
+                    _list[index].active = true;
+                    saveVal("active_profile", "${_list[index].id}");
+                  });
                 }
               },
-              child: CircleAvatar(
-                radius: 53,
-                backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                child: index < 0 ? const Icon(Icons.person_add,color: Color(0xffFED857),size: 40,) : Text(_list[index].subName,textAlign: TextAlign.center,style: const TextStyle(
-                  fontSize: 22,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500
-                ),),
+              child: Container(
+                decoration: index >= 0 && _list[index].active ? BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 3
+                  )
+                ) : null,
+                child: CircleAvatar(
+                  radius: 53,
+                  backgroundColor: index < 0 ? null : _list[index].active ? Colors.amber : Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                  child: index < 0 ? const Icon(Icons.person_add,color: Colors.white,size: 40,) : Text(_list[index].subName,textAlign: TextAlign.center,style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+shadows: _list[index].active ? [
+  const BoxShadow(
+    color: Colors.black,
+    spreadRadius: 200,
+    offset: Offset(2.5,.5),
+    blurRadius: 5
+  )
+] : null,
+                    fontWeight: FontWeight.w500
+                  ),),
+                ),
               ),
             ),
           );

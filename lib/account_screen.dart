@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/borrowed_book_screen.dart';
 import 'package:library_app/intro_slider_screen.dart';
 import 'package:library_app/super_base.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'json/user.dart';
 
@@ -96,7 +98,7 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                     shape: const RoundedRectangleBorder(),
                     child: InkWell(
                       onTap: ()async{
-
+                        push(const BorrowedBookScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -145,7 +147,7 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                     shape: const RoundedRectangleBorder(),
                     child: InkWell(
                       onTap: ()async{
-
+                        launch("tel:+250788606765");
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
