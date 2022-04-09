@@ -19,4 +19,6 @@ class Book {
     "BookName":name,
     "BookCategoryName":category
   };
+
+  bool loading = false;
 }

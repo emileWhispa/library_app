@@ -34,7 +34,11 @@ class BookmarkScreenState extends Superbase<BookmarkScreen> {
     setState(() {
 
     });
-    return Future.value();
+    return ajax(url: "ShowBookmarkedBooks",method: "POST",onValue: (s,v){
+        setState(() {
+          list = (s['BookmarkedBooks'] as Iterable).map((e) => Book.fromJson(e)).toList();
+        });
+      });
   }
 
   @override

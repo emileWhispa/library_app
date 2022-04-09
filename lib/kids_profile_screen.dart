@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/create_kid_profile_screen.dart';
 import 'package:library_app/json/kid.dart';
@@ -37,6 +38,27 @@ class _KidsProfileScreenState extends Superbase<KidsProfileScreen> {
       });
     });
   }
+  
+  Future<void> activateProfile(Kid kid){
+    setState(() {
+      kid.loading = true;
+    });
+    return ajax(url: "ActiveProfile",method: "POST",data: FormData.fromMap({"profile_id":kid.id}),onValue: (obj,url){
+      print(obj);
+      setState(() {
+        saveVal("active_profile", "${kid.id}");
+        showSnack(obj['message']??'');
+        for (var element in _list) {
+          element.active = false;
+        }
+        kid.active = true;
+      });
+    },onEnd: (){
+      setState(() {
+        kid.loading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +88,7 @@ class _KidsProfileScreenState extends Superbase<KidsProfileScreen> {
                   await push(const CreateKidProfileScreen());
                   _key.currentState?.show();
                 }else{
-                  setState(() {
-                    for (var element in _list) {element.active = false;}
-                    _list[index].active = true;
-                    saveVal("active_profile", "${_list[index].id}");
-                  });
+                  activateProfile(_list[index]);
                 }
               },
               child: Container(
@@ -84,7 +102,9 @@ class _KidsProfileScreenState extends Superbase<KidsProfileScreen> {
                 child: CircleAvatar(
                   radius: 53,
                   backgroundColor: index < 0 ? null : _list[index].active ? Colors.amber : Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                  child: index < 0 ? const Icon(Icons.person_add,color: Colors.white,size: 40,) : Text(_list[index].subName,textAlign: TextAlign.center,style: TextStyle(
+                  child: index < 0 ? const Icon(Icons.person_add,color: Colors.white,size: 40,) : _list[index].loading ? const CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                  ) : Text(_list[index].subName,textAlign: TextAlign.center,style: TextStyle(
                     fontSize: 22,
                     color: Colors.white,
 shadows: _list[index].active ? [

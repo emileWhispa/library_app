@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:library_app/home_screen.dart';
 import 'package:library_app/intro_slider_screen.dart';
 import 'package:library_app/json/plan.dart';
+import 'package:library_app/select_plan_screen.dart';
 import 'package:library_app/super_base.dart';
 
 import 'json/user.dart';
@@ -63,8 +64,10 @@ class _MyHomePageState extends Superbase<MyHomePage> {
           User.user = User.fromJson(jsonDecode(string));
           if(plan != null){
             User.user!.plan = Plan.fromJson(jsonDecode(plan));
+            push(const HomeScreen(), replace: true);
+          }else{
+            push(const SelectPlanScreen(), replace: true);
           }
-          push(const HomeScreen(), replace: true);
         }else{
           push(const IntroSliderScreen(), replace: true);
         }

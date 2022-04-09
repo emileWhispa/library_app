@@ -82,15 +82,29 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
 
   Future<void> addToBookMark(Book book) async {
     var list = await getBooks();
-    list.add(book);
-    if(!bookExists(book)) {
-      _bookmarks?.add(book);
-    }
-    return save(bookmarkKey, list);
+    return ajax(url: "BookmarkBooks",method: "POST",data: FormData.fromMap({"book_id":book.id}),onValue: (obj,url)async{
+      print(obj);
+      if(obj is Map){
+
+        var msg = obj['BooksBorrowed'] ?? "Book removed from bookmark";
+
+        if(obj['BookmarkBookStatus'] == "added") {
+          list.add(book);
+          if (!bookExists(book)) {
+            _bookmarks?.add(book);
+          }
+          await save(bookmarkKey, list);
+        }else{
+          await removeFromBookMark(book,list: list);
+        }
+
+        showSnack(msg);
+      }
+    });
   }
 
-  Future<void> removeFromBookMark(Book book) async {
-    var list = await getBooks();
+  Future<void> removeFromBookMark(Book book,{List<Book>? list}) async {
+    list = await getBooks();
     list.removeWhere((e)=>e.id == book.id);
     _bookmarks?.removeWhere((e)=>e.id == book.id);
     return save(bookmarkKey, list);
@@ -161,11 +175,11 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
     }
   }
 
-  String? validateEmail(String value) {
+  String? validateEmail(String? value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern.toString());
-    if (value.isEmpty) {
+    if (value == null || value.isEmpty) {
       return "Email can not be empty";
     } else {
       if (!regex.hasMatch(value)) {
@@ -365,7 +379,7 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
     _key.currentState?.pop();
   }
 
-  Future showMd() async {
+  Future showMd([String? text]) async {
     //Timer(Duration(seconds: 8), ()=>this.canPop());
     await showGeneralDialog(
         transitionDuration: const Duration(seconds: 1),
@@ -387,14 +401,14 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
                         borderRadius: BorderRadius.circular(7)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
-                        CircularProgressIndicator(
+                      children:  <Widget>[
+                        const CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
-                          "Loading...",
-                          style: TextStyle(color: Colors.white),
+                          text ?? "Loading...",
+                          style: const TextStyle(color: Colors.white),
                         )
                       ],
                     ),
@@ -426,8 +440,8 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
     }
   }
 
-  void goBack(){
-    Navigator.pop(context);
+  void goBack([val]){
+    Navigator.pop(context,val);
   }
 
   void showSnack(String text){

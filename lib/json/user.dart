@@ -35,4 +35,9 @@ class User {
   bool get hasPhoneAndEmail=>email != null && phone != null;
 
   Plan? plan;
+
+
+  String get name=>fName??"";
+
+  String get shortName => name.length>2?name.substring(0,2) : name;
 }

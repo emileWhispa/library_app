@@ -132,7 +132,7 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _phoneController,
-                  validator: (s)=>s?.trim().isNotEmpty == true ? null : "Field is required !",
+                  validator: validateMobile,
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Phone Number",
@@ -148,7 +148,7 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _emailController,
-                  validator: (s)=>s?.trim().isNotEmpty == true ? null : "Field is required !",
+                  validator: validateEmail,
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Email Address",

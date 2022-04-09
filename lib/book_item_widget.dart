@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/json/book.dart';
 import 'package:library_app/super_base.dart';
@@ -19,6 +21,17 @@ class BookItemWidgetScreen extends StatefulWidget {
 
 class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
   Book get item => widget.book;
+
+  Future<void> addRemoteBookmark() async {
+    setState(() {
+      item.loading = true;
+    });
+    await addToBookMark(item);
+    setState(() {
+      item.loading = false;
+    });
+    return Future.value();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +86,8 @@ class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
                 children: [
                   Text(
                     item.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   Padding(
@@ -108,20 +123,13 @@ class _BookItemWidgetScreenState extends Superbase<BookItemWidgetScreen> {
               ),
             )),
             widget.hideFavIcon ? const SizedBox.shrink() : IconButton(
-                onPressed: () {
-                  String msg = "Book added to bookmark";
-                  if (exist) {
-                    msg = "Book removed from bookmark";
-                    removeFromBookMark(item);
-                  } else {
-                    addToBookMark(item);
-                  }
+                onPressed: item.loading ? null : ()async {
+                  await addRemoteBookmark();
                   setState(() {
                     widget.parentReload?.call();
-                    showSnack(msg);
                   });
                 },
-                icon: Icon(
+                icon: item.loading ? const CupertinoActivityIndicator() : Icon(
                   exist ? Icons.bookmark : Icons.bookmark_add_outlined,
                   color: exist ? Colors.amber : null,
                 ))

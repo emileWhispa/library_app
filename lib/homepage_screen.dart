@@ -166,6 +166,7 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 child: Image(
+                                                  height: double.infinity,
                                                   image: CachedNetworkImageProvider(
                                                       book.image),
                                                   fit: BoxFit.cover,

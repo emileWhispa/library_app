@@ -44,6 +44,10 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
       }
 
       showSnack(s['message']);
+    },error: (s,v){
+      if(s is Map && s.containsKey("message")){
+        showSnack("${s['message']}");
+      }
     });
     setState(() {
       _loading = false;
@@ -52,7 +56,6 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Center(
         child: Form(
@@ -122,7 +125,7 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _phoneController,
-                  validator: (s)=>s?.trim().isNotEmpty == true ? null : "Field is required !",
+                  validator: validateMobile,
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Phone Number",
@@ -138,7 +141,7 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _emailController,
-                  validator: (s)=>s?.trim().isNotEmpty == true ? null : "Field is required !",
+                  validator: validateEmail,
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Email Address",

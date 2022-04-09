@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/home_screen.dart';
+import 'package:library_app/json/plan.dart';
+import 'package:library_app/select_plan_screen.dart';
 import 'package:library_app/super_base.dart';
 
 import 'json/user.dart';
@@ -35,10 +37,23 @@ class _AuthenticationState extends Superbase<Authentication> {
         var user = User.fromJson(s);
         save(userKey, s);
         User.user = user;
-        push(const HomeScreen(),replaceAll: true);
+
+        if(s['userPlan'] is Map){
+          User.user?.plan = Plan.fromJson(s['userPlan']);
+          push(const HomeScreen(),replaceAll: true);
+        }else{
+          showSnack("Select plan first");
+          push(const SelectPlanScreen(),replaceAll: true);
+        }
+
       }
 
       showSnack(s['message']??"Done");
+    },error: (s,v){
+      print(s);
+      if(s is Map){
+        showSnack(s['message']??'');
+      }
     });
     setState(() {
       _loading = false;
@@ -131,15 +146,15 @@ class _AuthenticationState extends Superbase<Authentication> {
                   ))
                 ), child: const Text("Login")),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: (){
-
-                    },
-                    child: const Text("Forgot Password ?"),
-                  ),
-              ),
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //     child: TextButton(
+              //       onPressed: (){
+              //
+              //       },
+              //       child: const Text("Forgot Password ?"),
+              //     ),
+              // ),
               Center(child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Text("OR",style: Theme.of(context).textTheme.headline5),

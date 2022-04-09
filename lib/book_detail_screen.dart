@@ -46,20 +46,17 @@ class _BookDetailScreenState extends Superbase<BookDetailScreen> {
         IconThemeData(color: Theme.of(context).textTheme.headline6?.color),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         actions: [
-          IconButton(onPressed: (){
-
-            String msg ="Book added to bookmark";
-            if( exist ) {
-              msg ="Book removed from bookmark";
-              removeFromBookMark(widget.book);
-            } else {
-              addToBookMark(widget.book);
-            }
+          IconButton(onPressed: ()async{
             setState(() {
-              // widget.parentReload?.call();
-              showSnack(msg);
+              widget.book.loading = true;
             });
-          },icon: Icon( exist ? Icons.bookmark : Icons.bookmark_add_outlined,color: exist ? Colors.amber : null,))
+            await addToBookMark(widget.book);
+            setState(() {
+              widget.book.loading = false;
+            });
+            return Future.value();
+          }
+          ,icon: Icon( exist ? Icons.bookmark : Icons.bookmark_add_outlined,color: exist ? Colors.amber : null,))
           // PopupMenuButton(itemBuilder: (context)=>[]),
         ],
       ),

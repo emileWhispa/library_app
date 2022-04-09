@@ -28,7 +28,7 @@ class _AccountScreenState extends Superbase<AccountScreen> {
             Center(child: Padding(
               padding: const EdgeInsets.all(8.0).copyWith(top: 30),
               child: CircleAvatar(
-                child: Text(User.user?.fName??"",style: const TextStyle(
+                child: Text(User.user?.shortName??"",style: const TextStyle(
                     fontSize: 29
                 ),),
                 radius: 70,
@@ -87,7 +87,10 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                           children: [
                             Image.asset("assets/refresh.png"),
                             const SizedBox(width: 7),
-                            Text(User.user?.plan?.name??"",style: Theme.of(context).textTheme.subtitle1,),
+                            Expanded(child: Text(User.user?.plan?.name??"",style: Theme.of(context).textTheme.subtitle1,)),
+                            Text("Expires on ${User.user?.plan?.date??""}",style: const TextStyle(
+                              color: Color(0xff02A95C)
+                            ),)
                           ],
                         ),
                       ),
