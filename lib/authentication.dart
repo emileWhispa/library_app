@@ -122,7 +122,7 @@ class _AuthenticationState extends Superbase<Authentication> {
                       filled: true,
                       hintText: "Password",
                       fillColor: const Color(0xffECF1F1),
-                      prefixIcon: const Icon(Icons.key_outlined),
+                      prefixIcon: const Icon(Icons.lock),
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(12)
