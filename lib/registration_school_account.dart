@@ -55,11 +55,41 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
       }
 
       showSnack(s['message']);
+    },error: (s,v){
+      // print(s);
+      String message = "";
+      if(s is Map && s.containsKey("message")){
+        message = "${s['message']}";
+      }
+
+
+      if(s is Map && s.containsKey("data") && s['data'] != null){
+
+        var data = s['data'] as Map;
+
+        data.forEach((key, value) {
+          var t = value is Iterable && value.isNotEmpty ? "${value.first}" : "$value";
+          if(key == "phone_number"){
+            _phoneMessage = t;
+          }else if(key == "email"){
+            _emailMessage = t;
+          }else{
+            message = "$message\n$t";
+          }
+        });
+        _key.currentState?.validate();
+      }
+
+      showSnack(message);
     });
     setState(() {
       _loading = false;
     });
   }
+
+
+  String? _phoneMessage;
+  String? _emailMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +162,7 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _phoneController,
-                  validator: validateMobile,
+                  validator: (s)=>_phoneMessage??validateMobile(s),
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Phone Number",
@@ -148,7 +178,7 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _emailController,
-                  validator: validateEmail,
+                  validator: (s)=>_emailMessage??validateEmail(s),
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Email Address",
@@ -270,8 +300,9 @@ class _RegistrationSchoolScreenState extends Superbase<RegistrationSchoolScreen>
               Padding(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: _loading ? const Center(child: CircularProgressIndicator(),) : ElevatedButton(onPressed: (){
+                  _emailMessage = null;
+                  _phoneMessage = null;
                   bool v = _key.currentState?.validate() ?? false;
-
                   if(v){
                     login();
                   }

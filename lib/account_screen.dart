@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/about_screen.dart';
 import 'package:library_app/borrowed_book_screen.dart';
 import 'package:library_app/intro_slider_screen.dart';
 import 'package:library_app/super_base.dart';
@@ -132,6 +133,7 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                     shape: const RoundedRectangleBorder(),
                     child: InkWell(
                       onTap: ()async{
+                        push(const AboutScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -169,7 +171,6 @@ class _AccountScreenState extends Superbase<AccountScreen> {
                     shape: const RoundedRectangleBorder(),
                     child: InkWell(
                       onTap: ()async{
-
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),

@@ -25,6 +25,9 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
 
   bool _loading =false;
 
+  String? _phoneMessage;
+  String? _emailMessage;
+
   Future<void> login() async {
     setState(() {
       _loading = true;
@@ -43,11 +46,34 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
         push(const SelectPlanScreen());
       }
 
+      // print(s);
       showSnack(s['message']);
     },error: (s,v){
+      // print(s);
+      String message = "";
       if(s is Map && s.containsKey("message")){
-        showSnack("${s['message']}");
+        message = "${s['message']}";
       }
+
+
+      if(s is Map && s.containsKey("data") && s['data'] != null){
+
+        var data = s['data'] as Map;
+
+        data.forEach((key, value) {
+          var t = value is Iterable && value.isNotEmpty ? "${value.first}" : "$value";
+          if(key == "phone_number"){
+            _phoneMessage = t;
+          }else if(key == "email"){
+            _emailMessage = t;
+          }else{
+            message = "$message\n$t";
+          }
+        });
+        _key.currentState?.validate();
+      }
+
+      showSnack(message);
     });
     setState(() {
       _loading = false;
@@ -125,7 +151,7 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _phoneController,
-                  validator: validateMobile,
+                  validator: (s)=>_phoneMessage ?? validateMobile(s),
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Phone Number",
@@ -141,7 +167,7 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
                   controller: _emailController,
-                  validator: validateEmail,
+                  validator: (s)=>_emailMessage??validateEmail(s),
                   decoration: InputDecoration(
                       filled: true,
                       hintText: "Email Address",
@@ -189,6 +215,8 @@ class _RegistrationFamilyScreenState extends Superbase<RegistrationFamilyScreen>
               Padding(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: _loading ? const Center(child: CircularProgressIndicator(),) : ElevatedButton(onPressed: (){
+                  _emailMessage = null;
+                  _phoneMessage = null;
                   bool v = _key.currentState?.validate() ?? false;
 
                   if(v){
