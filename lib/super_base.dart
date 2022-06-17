@@ -83,7 +83,6 @@ abstract class Superbase<T extends StatefulWidget> extends State<T>{
   Future<void> addToBookMark(Book book) async {
     var list = await getBooks();
     return ajax(url: "BookmarkBooks",method: "POST",data: FormData.fromMap({"book_id":book.id}),onValue: (obj,url)async{
-      print(obj);
       if(obj is Map){
 
         var msg = obj['BooksBorrowed'] ?? "Book removed from bookmark";

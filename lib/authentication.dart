@@ -50,7 +50,6 @@ class _AuthenticationState extends Superbase<Authentication> {
 
       showSnack(s['message']??"Done");
     },error: (s,v){
-      print(s);
       if(s is Map){
         showSnack(s['message']??'');
       }
