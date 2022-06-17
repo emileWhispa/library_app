@@ -19,7 +19,7 @@ class BookmarkScreenState extends Superbase<BookmarkScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       reload();
     });
     super.initState();

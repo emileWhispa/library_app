@@ -20,7 +20,7 @@ class _CategoryScreenState extends Superbase<CategoryScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if(widget.scrollable){
         loadData();
       }
