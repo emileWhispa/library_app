@@ -22,7 +22,7 @@ class _CategoryBookScreenState extends Superbase<CategoryBookScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _key.currentState?.show();
     });
     super.initState();

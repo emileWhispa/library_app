@@ -55,7 +55,7 @@ class _MyHomePageState extends Superbase<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var string = (await prefs).getString(userKey);
 
       var plan = (await prefs).getString("plan");

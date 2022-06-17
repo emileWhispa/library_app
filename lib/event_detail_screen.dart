@@ -22,7 +22,7 @@ class _EventDetailScreenState extends Superbase<EventDetailScreen> {
     setState(() {
       _attending = true;
     });
-    await ajax(url: "AttendEvent",method: "POST",data: FormData.fromMap({"event_id":widget.event.id}),error: (s,v)=>print(s),onValue: (s,v){
+    await ajax(url: "AttendEvent",method: "POST",data: FormData.fromMap({"event_id":widget.event.id}),onValue: (s,v){
       // print(s);
       setState(() {
         _message = s['message']??'';
