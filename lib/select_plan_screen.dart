@@ -22,7 +22,7 @@ class _SelectPlanScreenState extends Superbase<SelectPlanScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _key.currentState?.show();
     });
     super.initState();
@@ -57,7 +57,6 @@ class _SelectPlanScreenState extends Superbase<SelectPlanScreen> {
         data: FormData.fromMap({"PhoneNumber": phone, "membership_id": e.id}),
         onValue: (obj, url) async {
           closeMd();
-          print(obj);
           if(obj is Map && obj.containsKey("userPlan")){
             e = Plan.fromJson(obj['userPlan']);
           }

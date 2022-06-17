@@ -19,7 +19,7 @@ class BorrowedBookScreenState extends Superbase<BorrowedBookScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       reload();
     });
     super.initState();

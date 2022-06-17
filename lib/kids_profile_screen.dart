@@ -20,7 +20,7 @@ class _KidsProfileScreenState extends Superbase<KidsProfileScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _key.currentState?.show();
     });
     super.initState();
@@ -44,7 +44,7 @@ class _KidsProfileScreenState extends Superbase<KidsProfileScreen> {
       kid.loading = true;
     });
     return ajax(url: "ActiveProfile",method: "POST",data: FormData.fromMap({"profile_id":kid.id}),onValue: (obj,url){
-      print(obj);
+
       setState(() {
         saveVal("active_profile", "${kid.id}");
         showSnack(obj['message']??'');

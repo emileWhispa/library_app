@@ -27,7 +27,7 @@ class _HomepageScreenState extends Superbase<HomepageScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       loadCategories();
     });
   }

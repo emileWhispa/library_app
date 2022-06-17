@@ -19,7 +19,7 @@ class _EventScreenState extends Superbase<EventScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       loadData();
     });
   }
